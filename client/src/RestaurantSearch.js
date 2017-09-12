@@ -8,6 +8,7 @@ class RestaurantSearch extends React.Component {
     restaurants: [], 
     showRemoveIcon: false, 
     searchValue: '', 
+    searchParam: 'name', 
   }
 
   handleSearchChange = (e) => {
@@ -27,13 +28,22 @@ class RestaurantSearch extends React.Component {
         showRemoveIcon: true,  
       });  
 
-      Client.search(value, (restaurants) => {
+      Client.search(value, this.state.searchParam, (restaurants) => {
         this.setState({
           restaurants: restaurants.slice(0, MATCHING_ITEM_LIMIT),  
         });  
       }); 
     }
   }; 
+
+  handleSearchParamChange = (e) => {
+    this.setState({ searchParam: e.target.value });  
+    Client.search(this.state.value, this.state.searchParam, (restaurants) => {
+      this.setState({
+        restaurants: restaurants.slice(0, MATCHING_ITEM_LIMIT),  
+      });  
+    }); 
+  }
 
   handleSearchCancel = () => {
     this.setState({
@@ -65,7 +75,7 @@ class RestaurantSearch extends React.Component {
         <table className='ui selectable structured large table'>
           <thead>
             <tr>
-              <th colSpan='5'>
+              <th colSpan='1'>
                 <div className='ui fluid search'>
                   <div className='ui icon input'>
                     <input
@@ -84,7 +94,18 @@ class RestaurantSearch extends React.Component {
                   />
                 </div>
               </th>
+
+              <th colSpan='1'>
+                  <label>Search by:
+                  <select value={this.state.searchParam} onChange={this.handleSearchParamChange} >
+                    <option value="name">Name</option>
+                    <option value="zipcode">Zip Code</option>
+                    <option value="violation_description">Violation</option>
+                  </select>
+                  </label>
+              </th>
             </tr>
+
             <tr>
               <th className='eight wide'>Name</th>
               <th>Address</th>
