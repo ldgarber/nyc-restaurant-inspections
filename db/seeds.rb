@@ -42,26 +42,3 @@ CSV.foreach(File.join(dir, 'raw_inspection_data.csv'), 'r:ISO8859-1') do |row|
   Restaurant.create!(entry)
   
 end
-
-=begin
-print "\nSeeding part 2..."
-
-dir = File.dirname(File.expand_path(__FILE__))
-lineno = 1
-CSV.foreach(File.join(dir, 'raw_inspection_data_2.csv'), 'r:ISO8859-1') do |row| 
-  lineno = $.
-
-  next if lineno == 1
-  print '.' if lineno % 1000 == 0
-
-  entry = {}
-
-  COLUMNS.each_with_index do |column, idx| 
-    entry[column] = row[idx]
-  end
-
-  Restaurant.create!(entry)
-  
-end
-
-=end
